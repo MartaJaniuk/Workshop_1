@@ -1,5 +1,7 @@
 package pl.coderslab;
 
+import org.apache.commons.lang3.ArrayUtils;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
@@ -13,6 +15,7 @@ public class TaskManager {
 
         //pobranie zawartości pliku i zmiana na tablicę
         String [][] tasks = convertToArr();
+        //wybór opcji
         String inputOption = chooseOption();
 
         while (!inputOption.equals("exit")) {
@@ -21,7 +24,7 @@ public class TaskManager {
             } else if (inputOption.equals("add")) {
                 tasks = addRow(tasks);
             } else if (inputOption.equals("remove")) {
-                
+                tasks = removeRow(tasks);
             }
             inputOption = chooseOption();
         }
@@ -79,9 +82,35 @@ public class TaskManager {
 
     //dodanie wiersza
     public static String [][] addRow(String [][]arr) {
-        String [] newRow = {"ble ble","ble","ble"};
+
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Add task description");
+        String description = scanner.nextLine();
+        System.out.println("Add task due date");
+        String date = scanner.nextLine();
+
+        System.out.println("Is your task important: true/false");
+        String importance = scanner.nextLine();
+        while(!importance.equals("true") && !importance.equals("false")) {
+            System.out.println("You can only choose true or false.");
+            System.out.println("Is your task important: true/false");
+            importance = scanner.nextLine();
+        }
+
+        String [] newRow = {description,date,importance};
         arr = addNewElement(arr, newRow);
         return arr;
+    }
+
+    //usunięcie wiersza
+    public static String [][] removeRow(String arr[][]) {
+
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Please select number to remove");
+        int numberToRemove = scanner.nextInt();
+        arr = ArrayUtils.remove(arr, numberToRemove);
+        return arr;
+
     }
 
     //wyświetlenie zawartości tablicy
