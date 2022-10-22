@@ -28,13 +28,10 @@ public class TaskManager {
             }
             inputOption = chooseOption();
         }
-
             save(tasks);
-
         }
 
-
-    //pobranie zawarości pliku i zamiana na tablicę [][]
+    //pobranie zawartości pliku i zamiana na tablicę [][]
     public static String[][] convertToArr() {
 
         File file = new File("tasks.csv");
@@ -53,7 +50,7 @@ public class TaskManager {
         return tasksArr;
     }
 
-    //dynamiczne dodawanie wierszy do tablicy dwuwymiarowej
+    // dodawanie wierszy do tablicy dwuwymiarowej
     public static String [][] addNewElement(String [][] arr, String [] element) {
         arr = Arrays.copyOf(arr, arr.length+1);
         arr[arr.length-1] = element;
@@ -77,7 +74,6 @@ public class TaskManager {
             input = scanner.nextLine();
         }
         return input;
-
     }
 
     //dodanie wiersza
@@ -99,6 +95,7 @@ public class TaskManager {
 
         String [] newRow = {description,date,importance};
         arr = addNewElement(arr, newRow);
+        System.out.println("Row [" + description + "," + date + "," + importance + "] added");
         return arr;
     }
 
@@ -106,11 +103,22 @@ public class TaskManager {
     public static String [][] removeRow(String arr[][]) {
 
         Scanner scanner = new Scanner(System.in);
-        System.out.println("Please select number to remove");
-        int numberToRemove = scanner.nextInt();
-        arr = ArrayUtils.remove(arr, numberToRemove);
-        return arr;
+        int numberToRemove = -1;
 
+        do {
+            System.out.println("Please select number to remove. Number must be betwwen 0 and " + (arr.length-1));
+            while(!scanner.hasNextInt()) {
+                System.out.println("It's not a number. Please select number to remove");
+                scanner.next();
+            }
+
+            numberToRemove = scanner.nextInt();
+
+        } while (numberToRemove<0 || numberToRemove>=arr.length) ;
+
+        arr = ArrayUtils.remove(arr, numberToRemove);
+        System.out.println("Row " + numberToRemove + " succcessfully removed");
+        return arr;
     }
 
     //wyświetlenie zawartości tablicy
